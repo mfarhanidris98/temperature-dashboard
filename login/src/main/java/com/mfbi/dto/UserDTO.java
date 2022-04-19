@@ -1,19 +1,16 @@
 package com.mfbi.dto;
 
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+
+import javax.enterprise.context.RequestScoped;
 import java.util.Set;
 
-@NoArgsConstructor
-@ToString
-@EqualsAndHashCode(callSuper = false)
+@Data
+@RequestScoped
 public class UserDTO {
 
     public String username;
     public String password;
-    public Set<RoleDTO> roles;
+    public String roles;
 
-    public <T> UserDTO(String user, String s, Set<T> singleton) {
-    }
 }

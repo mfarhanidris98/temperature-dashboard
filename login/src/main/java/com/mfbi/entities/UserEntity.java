@@ -1,35 +1,26 @@
 package com.mfbi.entities;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import com.mfbi.dto.RoleDTO;
-import com.mfbi.dto.UserDTO;
+//import com.mfbi.dto.RoleDTO;
+//import com.mfbi.dto.UserDTO;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import lombok.*;
 
-public class UserEntity {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
-    //TODO: load the user from the database PanacheRepository
-    public static UserDTO findByUsername(String username) {
+@ToString
+@Entity
+public class UserEntity implements PanacheRepository {
 
-        //(extends or PanacheEntity PanacheEntityBase), find("username", username).firstResult();
-
-        Map<String, UserDTO> data = new HashMap<>();
-
-        UserDTO u = new UserDTO("user", "cBrlgyL2GI2GINuLUUwgojITuIufFycpLG4490dhGtY=", Collections.singleton(RoleDTO.Role.USER));
-
-        //username:passwowrd -> user:user
-        data.put("user", new UserDTO("user", "cBrlgyL2GI2GINuLUUwgojITuIufFycpLG4490dhGtY=", Collections.singleton(RoleDTO.Role.USER)));
-
-        //username:passwowrd -> admin:admin
-        data.put("admin", new UserDTO("admin", "dQNjUIMorJb8Ubj2+wVGYp6eAeYkdekqAcnYp+aRq5w=", Collections.singleton(RoleDTO.Role.ADMIN)));
-
-    System.out.println(Collections.singleton(RoleDTO.Role.USER));
-
-        if (data.containsKey(username)) {
-            return data.get(username);
-        } else {
-            return null;
-        }
-    }
+    @Id
+    @GeneratedValue
+    private Long id;
+    public String username;
+    public String password;
+    public String roles;
 }

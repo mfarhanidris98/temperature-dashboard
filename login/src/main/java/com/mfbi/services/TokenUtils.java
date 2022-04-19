@@ -1,6 +1,7 @@
 package com.mfbi.services;
 
-import com.mfbi.dto.RoleDTO;
+//import com.mfbi.dto.RoleDTO;
+//import com.mfbi.entities.UserEntity.Role;
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -9,6 +10,7 @@ import java.io.InputStream;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,27 +19,32 @@ public class TokenUtils {
 
     @ConfigProperty(name = "mp.jwt.verify.privatekey.location")  private static String privateKeyLocation;
 
-    public static String generateToken(String username, Set<RoleDTO> roles, Long duration, String issuer) throws Exception {
+    public static String generateToken(String username, String roles, Long duration, String issuer) throws Exception {
 
-    //        String privateKeyLocation = "/privateKey.pem";
-
+            String privateKeyLocation = "/privateKey.pem";
+//    System.out.println(privateKeyLocation);
+//
         PrivateKey privateKey = readPrivateKey(privateKeyLocation);
 
         JwtClaimsBuilder claimsBuilder = Jwt.claims();
         long currentTimeInSecs = currentTimeInSecs();
 
-        Set<String> groups = new HashSet<>();
-        for (RoleDTO role : roles) groups.add(role.toString());
+//        Set<String> roles = new HashSet<>(
+//                Arrays.asList("admin", "writer")
+//        );
+//        Set<String> groups = new HashSet<>();
+//        for (String role : roles) groups.add(role.toString());
 
         claimsBuilder.issuer(issuer);
         claimsBuilder.subject(username);
         claimsBuilder.issuedAt(currentTimeInSecs);
         claimsBuilder.expiresAt(currentTimeInSecs + duration);
-        claimsBuilder.groups(groups);
+        claimsBuilder.groups("USER");
 
         return claimsBuilder.jws().signatureKeyId(privateKeyLocation).sign(privateKey);
     }
 
+    //TODO: fix pemResName null
     public static PrivateKey readPrivateKey(final String pemResName) throws Exception {
         try (InputStream contentIS = TokenUtils.class.getResourceAsStream(pemResName)) {
             byte[] tmp = new byte[4096];
