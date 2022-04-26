@@ -47,7 +47,6 @@ public class UserService {
     }
 
     public String create(UserDTO newUser){
-    System.out.println(userEntity);
         userEntity = new UserEntity();
         userEntity.username = newUser.getUsername();
         userEntity.password = encoder.encode(newUser.getPassword());

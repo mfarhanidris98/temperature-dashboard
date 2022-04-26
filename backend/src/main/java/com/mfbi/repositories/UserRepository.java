@@ -35,7 +35,6 @@ public class UserRepository implements PanacheRepository<UserEntity> {
 
     public String create(UserDTO user){
         user.setRoles("USER");
-        System.out.println(user);
         userService.create(user);
         return userService.generateJwt(user);
     }

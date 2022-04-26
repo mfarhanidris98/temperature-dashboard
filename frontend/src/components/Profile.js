@@ -8,9 +8,9 @@ const Profile = () => {
   }
   return (
     <div className="container">
-      <header className="jumbotron">
+      <header className="jumbotron py-5">
         <h3>
-          <strong>{currentUser.username}</strong> Profile
+          <strong>{currentUser.username}</strong>'s Profile
         </h3>
       </header>
       <p>
@@ -18,16 +18,9 @@ const Profile = () => {
         {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
       </p>
       <p>
-        <strong>Id:</strong> {currentUser.id}
-      </p>
-      <p>
         <strong>Email:</strong> {currentUser.email}
       </p>
-      <strong>Authorities:</strong>
-      <ul>
-        {currentUser.roles &&
-          Object.entries(currentUser).map((role, index) => <li key={index}>{role}</li>)}
-      </ul>
+      <strong>Authorities:</strong>{currentUser.roles}
     </div>
   );
 };
