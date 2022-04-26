@@ -24,7 +24,7 @@ const validEmail = (value) => {
   }
 };
 
-const Register = () => {
+const Activation = () => {
   const form = useRef();
   const checkBtn = useRef();
   const [username, setUsername] = useState("");
@@ -54,11 +54,7 @@ const Register = () => {
   return (
     <div className="col-md-12">
       <div className="card card-container">
-        <img
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-          alt="profile-img"
-          className="profile-img-card"
-        />
+        <div>Activate Account</div>
         <Form onSubmit={handleActivation} ref={form}>
           {!successful && (
             <div>
@@ -78,10 +74,11 @@ const Register = () => {
               </div>
             </div>
           )}
-          {message && (
+          {successful && (
             <div className="form-group">
               <div className={successful ? "alert alert-success" : "alert alert-danger"} role="alert">
-                {message}
+                <div>Account activated.</div>
+                <div>Please check your email inbox</div>
               </div>
             </div>
           )}
@@ -91,4 +88,4 @@ const Register = () => {
     </div>
   );
 };
-export default Register;
+export default Activation;

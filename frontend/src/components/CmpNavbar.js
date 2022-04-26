@@ -46,11 +46,6 @@ function CmpNavbar() {
           Dashboard
         </a>
         <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to={"/linechart"} className="nav-link">
-              LineChart
-            </Link>
-          </li>
           {/* <li className="nav-item">
             <Link to={"/uploadfile"} className="nav-link">
               Upload
@@ -79,7 +74,7 @@ function CmpNavbar() {
           {currentUser && (
             <li className="nav-item">
               <Link to={"/user"} className="nav-link">
-                User
+                Upload CSV
               </Link>
             </li>
           )}
@@ -114,7 +109,7 @@ function CmpNavbar() {
       </nav>
       <Routes>
         {/* <Route path='/' element={<DspHome />} /> */}
-        <Route path='/Linechart' element={<DspLineChart />} />
+        <Route path='/user' element={<BoardUser />} />
         <Route path='/uploadfile' element={<CmpUploadFile />} />
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
@@ -122,9 +117,6 @@ function CmpNavbar() {
         <Route exact path="/activation" element={<Activation />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/profile" element={<Profile />} />
-        <Route path="/user" element={<BoardUser />} />
-        <Route path="/mod" element={<BoardModerator />} />
-        <Route path="/admin" element={<BoardAdmin />} />
       </Routes>
 
     </div>
