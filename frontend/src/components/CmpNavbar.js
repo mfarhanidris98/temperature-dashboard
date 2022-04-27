@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Router, Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 import CmpUploadFile from './CmpUploadFile';
-import DspLineChart from '../views/DspLineChart';
-import DspHome from '../views/DspHome';
 import { useDispatch, useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
@@ -14,8 +12,6 @@ import Activation from "./Activation";
 import Home from "./Home";
 import Profile from "./Profile";
 import BoardUser from "./BoardUser";
-import BoardModerator from "./BoardModerator";
-import BoardAdmin from "./BoardAdmin";
 import { logout } from "../actions/auth";
 import { clearMessage } from "../actions/message";
 import { history } from "../helpers/history";
@@ -46,17 +42,6 @@ function CmpNavbar() {
           Dashboard
         </a>
         <div className="navbar-nav mr-auto">
-          {/* <li className="nav-item">
-            <Link to={"/uploadfile"} className="nav-link">
-              Upload
-            </Link>
-          </li> */}
-          {/* <li className="nav-item">
-            <Link to={"/home"} className="nav-link">
-              Home
-            </Link>
-          </li> */}
-          {/* TODO: delete after tweaking */}
           {showModeratorBoard && (
             <li className="nav-item">
               <Link to={"/mod"} className="nav-link">
@@ -108,7 +93,6 @@ function CmpNavbar() {
         )}
       </nav>
       <Routes>
-        {/* <Route path='/' element={<DspHome />} /> */}
         <Route path='/user' element={<BoardUser />} />
         <Route path='/uploadfile' element={<CmpUploadFile />} />
         <Route path="/" element={<Home />} />

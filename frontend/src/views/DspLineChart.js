@@ -1,16 +1,9 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useMemo } from 'react';
 import CanvasJSReact from '../assets/canvasjs.react';
 import '../App.css';
-import UploadCsv from '../components/UploadCsv';
 import { parse } from "papaparse";
 
-var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-const csv = require('../components/UploadCsv');
-
-const toDate = (num) => {
-  return num.toLocaleString();
-}
 
 function DspLineChart() {
   const [highlighted, setHighlighted] = useState(false);
@@ -19,13 +12,6 @@ function DspLineChart() {
       uuid: "", empty: "", time: '', empty2: '', empty3: '', temperature1: '', temperature2: ''
     },
   ]);
-  // const [content, setContent] = useState("");
-  // useEffect(() => {
-  //   getCsv(csv).then(
-  //     (csv) => {
-  //       setContent(csv)
-  //     })
-  // })
   const options = {
     theme: "dark2",
     animationEnabled: true,
@@ -79,16 +65,89 @@ function DspLineChart() {
         { x: 1635730000000, y: 26.35 },
         { x: 1648800000000, y: 22.799999 },
         { x: 1647010000000, y: 25.6 },
-
-        // csv.map((csv) => (
-        //   <li key={csv.time}>
-        //     <strong>{Number(csv.time)}</strong>: {csv.temperature}
-        //   </li>
-        // ))
-
       ]
     }]
-  }
+  };
+
+  const useSortableData = (items, config = null) => {
+    const [sortConfig, setSortConfig] = useState(config);
+
+    const sortedItems = useMemo(() => {
+      let sortableItems = [...items];
+      if (sortConfig !== null) {
+        sortableItems.sort((a, b) => {
+          if (a[sortConfig.key] < b[sortConfig.key]) {
+            return sortConfig.direction === 'ascending' ? -1 : 1;
+          }
+          if (a[sortConfig.key] > b[sortConfig.key]) {
+            return sortConfig.direction === 'ascending' ? 1 : -1;
+          }
+          return 0;
+        });
+      }
+      return sortableItems;
+    }, [items, sortConfig]);
+
+    const requestSort = (key) => {
+      let direction = 'ascending';
+      if (
+        sortConfig &&
+        sortConfig.key === key &&
+        sortConfig.direction === 'ascending'
+      ) {
+        direction = 'descending';
+      }
+      setSortConfig({ key, direction });
+    };
+
+    return { items: sortedItems, requestSort, sortConfig };
+  };
+
+  const ProductTable = (props) => {
+    const { items, requestSort, sortConfig } = useSortableData(props.products);
+    const getClassNamesFor = (name) => {
+      if (!sortConfig) {
+        return;
+      }
+      return sortConfig.key === name ? sortConfig.direction : undefined;
+    };
+    return (
+      <>
+        <table className="table table-sm table-dark">
+          <thead>
+            <tr>
+              <th scope="col">
+                <button
+                  type="button"
+                  onClick={() => requestSort('time')}
+                  className={getClassNamesFor('time')}
+                >Time
+                </button>
+              </th>
+              <th scope="col">
+                <button
+                  type="button"
+                  onClick={() => requestSort('temperature')}
+                  className={getClassNamesFor('temperature')}
+                >Temperature
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {csv.map((csv) => (
+              <tr key={csv.time}>
+                <td>{new Date(Number(csv.time)).toLocaleString()}</td>
+                <td>{(Number(csv.temperature1) === '0' ? Number(csv.temperature2) : Number(csv.temperature1))}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
+
+    );
+  };
+
 
   return (
     <div className="container">
@@ -119,7 +178,7 @@ function DspLineChart() {
                 .forEach(async (file) => {
                   const text = await file.text();
                   const result = parse(text, { header: true });
-                  setCsv((existing) => [...existing, ...result.data]);
+                  setCsv((existing) => [...result.data]);
                 });
             }}
           >
@@ -127,27 +186,11 @@ function DspLineChart() {
           </div>
         </div>
       </div>
-
-      <table className="table table-sm table-dark">
-        <thead>
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">Temperature</th>
-          </tr>
-        </thead>
-        <tbody>
-          {csv.map((csv) => (
-            <tr key={csv.time}>
-              <td>{new Date(Number(csv.time)).toLocaleString()}</td>
-              <td>{(Number(csv.temperature1) == '0' ? Number(csv.temperature2) : Number(csv.temperature1))}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <CanvasJSChart options={options}
-      /* onRef={ref => this.chart = ref} */
+      <ProductTable
+        products={csv}
       />
-      {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+      <CanvasJSChart options={options} />
+
     </div >
   );
 }
