@@ -135,12 +135,13 @@ function DspLineChart() {
             </tr>
           </thead>
           <tbody>
-            {csv.map((csv) => (
-              <tr key={csv.time}>
+            {csv.map((csv, index) => (
+              <tr key={csv.index}>
                 <td>{new Date(Number(csv.time)).toLocaleString()}</td>
-                <td>{(Number(csv.temperature1) === '0' ? Number(csv.temperature2) : Number(csv.temperature1))}</td>
+                <td>{(csv.temperature1 == 0 ? csv.temperature2 : csv.temperature1)}</td>
               </tr>
-            ))}
+            ))
+            }
           </tbody>
         </table>
       </>

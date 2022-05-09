@@ -15,6 +15,7 @@ import BoardUser from "./BoardUser";
 import { logout } from "../actions/auth";
 import { clearMessage } from "../actions/message";
 import { history } from "../helpers/history";
+import CmpUploadCsv from "./CmpUploadCsv";
 
 function CmpNavbar() {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -93,7 +94,7 @@ function CmpNavbar() {
         )}
       </nav>
       <Routes>
-        <Route path='/user' element={<BoardUser />} />
+        <Route path='/user' element={<CmpUploadCsv />} />
         <Route path='/uploadfile' element={<CmpUploadFile />} />
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
@@ -101,6 +102,7 @@ function CmpNavbar() {
         <Route exact path="/activation" element={<Activation />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/profile" element={<Profile />} />
+        <Route exact path="/uploadcsv" element={<BoardUser />} />
       </Routes>
 
     </div>

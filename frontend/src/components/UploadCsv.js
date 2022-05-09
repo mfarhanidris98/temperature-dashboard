@@ -1,7 +1,7 @@
 import React from "react";
 import { parse } from "papaparse";
 
-export default function App() {
+export default function CmpUploadCsv() {
   const [highlighted, setHighlighted] = React.useState(false);
   const [csv, setCsv] = React.useState([
     {},
